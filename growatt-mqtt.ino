@@ -70,7 +70,7 @@ void reconnect() {
     if (client.connect("GrowattInverter")) {
       //Serial.println("connected");
       // Once connected, publish an announcement...
-      client.publish("inverter/status", "Inverter says hi!");
+      client.publish("inverter/status", "init");
       // ... and resubscribe
       //client.subscribe("inTopic");
     } else {
@@ -95,6 +95,26 @@ float glueFloat(unsigned int d1, unsigned int d0){
   return f;
 }
 
+void publishStatus(uint16_t st){
+  char buf[16];
+  
+  String str = "unknown";
+  switch(st){
+    case 0:
+      str = "waiting";
+      break;
+    case 1:
+      str = "normal";
+      break;
+    case 3: 
+      str = "fault";
+      break;
+  }
+  str.toCharArray(buf, 16);
+  client.publish("inverter/status", buf, true);
+  
+}
+
 void publishFloat(char * topic, float f){
   String value_str = String(f, 1);
   char value_char[32] = "";
@@ -104,7 +124,7 @@ void publishFloat(char * topic, float f){
   char topic_char[128] = "";
   topic_str.toCharArray(topic_char, 128);
   
-  client.publish(topic_char, value_char);
+  client.publish(topic_char, value_char, true);
 }
 
 unsigned long next_poll = 0;
@@ -134,6 +154,8 @@ void loop()
         client.publish(topic, value);
       }*/
 
+      publishStatus(node.getResponseBuffer(0));
+      
       publishFloat("Ppv", glueFloat(node.getResponseBuffer(1), node.getResponseBuffer(2)));    
       publishFloat("Vpv1", glueFloat(0, node.getResponseBuffer(3)));    
       publishFloat("PV1Curr", glueFloat(0, node.getResponseBuffer(4)));    
