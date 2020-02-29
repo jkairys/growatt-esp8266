@@ -11,4 +11,4 @@
 #define MQTT_HOSTNAME "growatt"
 
 // Put your wifi and mqtt settings in settings.h to avoid them being committed to Git Hub
-#include "settings.h"
+// #include "settings.h"
