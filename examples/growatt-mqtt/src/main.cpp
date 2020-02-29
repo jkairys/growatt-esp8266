@@ -1,9 +1,10 @@
 #include "main.h"
 
-#define PIN_TX D5
-#define PIN_RX D6
+
 #define PIN_LED_WIFI D2
 #define PIN_LED_COMM D1
+#define PIN_TX D5
+#define PIN_RX D6
 #define SLAVE_ADDRESS 1
 
 const char* ssid = WIFI_SSID;
