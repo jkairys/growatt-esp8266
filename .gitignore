@@ -27,3 +27,5 @@
 *.exe
 *.out
 *.app
+
+firmware/src/settings.h
